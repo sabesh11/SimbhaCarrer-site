@@ -1,0 +1,6 @@
+.floating{
+    position: relative !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    background-color: goldenrod !important;
+}
