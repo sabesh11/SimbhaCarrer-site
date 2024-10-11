@@ -9,6 +9,7 @@ import axios from 'axios';
 import Alert from "@mui/material/Alert";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Bar from '../Bar';
 const Signin = () => {
 
     const [username, setUsername] = useState("");
@@ -64,13 +65,15 @@ const Signin = () => {
       };
     return (
         <div>
+            <div className='d-md-none d-block'><Bar/></div>
+            
             <div className="container-fluid">
                 <div className="row ">
-                    <div className="col-6 align-self-center  p-2" style={{ backgroundColor: '#dc3545' }}>
+                    <div className="col-6 align-self-center  p-2 d-md-block d-none" style={{ backgroundColor: '#dc3545' }}>
                         <img src={signinimage} height={570} />
                     </div>
-                    <div className="col-5 align-self-center ms-5 p-5" >
-                        <h1 style={{ color: '#dc3545' }}>Hello,<br></br>
+                    <div className="col-md-5 align-self-center  p-5" >
+                        <h1 style={{ color: 'red' }}>Hello,<br></br>
                             Welcome back</h1>
                             <form >
                         <div class="mt-4">
@@ -128,12 +131,12 @@ const Signin = () => {
                 )}
                         </div>
                         <div class="row justify-content-center">
-                            <div class="col-md-12 col-6 mt-4 text-center">
-                                <a href="" class="text-indigo-14" style={{ textDecoration: 'none', color: '#dc3545', fontSize: '18px' }}>Forgot password?</a>
+                            <div class="col-md-12 co1-12 mt-4 text-center">
+                                <a href="" class="text-indigo-14" style={{ textDecoration: 'none', color: 'red', fontSize: '18px' }}>Forgot password?</a>
                             </div>
                         </div>
                         <div className="mt-4">
-                            <button class="btn w-100 text-white" type="button" style={{ backgroundColor: '#dc3545' }} onClick={handleClick}>Signin</button>
+                            <button class="btn w-100 text-white" type="button" style={{ backgroundColor: 'red' }} onClick={handleClick}>Signin</button>
                         </div>
                         </form>
                     </div>
