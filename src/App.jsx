@@ -1,8 +1,11 @@
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
 import './App.css'
 import Signin from './Pages/Signin'
-import DashboardLayoutAccount from './Pages/JobPanel'
+
 import JobPanel from './Pages/JobPanel'
+
+import Layout from './Components/Layout'
+import Applicant from './Pages/Applicant'
 
 function App() {
   
@@ -12,7 +15,10 @@ function App() {
      <BrowserRouter>
      <Routes>
       <Route path="/" element={<Signin />} />
+      <Route element={<Layout />}>
       <Route path="/home" element={<JobPanel />} />
+      <Route path="/applicantpanel" element={<Applicant />} />
+      </Route>
      </Routes>
      </BrowserRouter>
     </>

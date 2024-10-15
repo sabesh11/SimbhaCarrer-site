@@ -291,7 +291,7 @@ const copyToClipboard =(text) => {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer
+      {/* <Drawer
       
         sx={{
           width: drawerWidth,
@@ -323,7 +323,7 @@ const copyToClipboard =(text) => {
         </List>
         <Divider />
 
-      </Drawer>
+      </Drawer> */}
       <Box
         component="main"
         sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
