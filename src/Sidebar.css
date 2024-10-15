@@ -1,0 +1,47 @@
+/* styles.css */
+.active-item {
+    background: linear-gradient(
+        to right,
+        rgba(255, 99, 99, 0.227) 20%,  /* Light red with transparency */
+        rgba(252, 14, 14, 0.4) 40%,     /* Strong red */
+        rgba(225, 6, 6, 0.808) 60%  /* Light red with transparency */
+      );
+    background-size: 200% auto;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    font-size: 16px;
+    padding-left: 26px;
+    position: relative;
+    animation: wave 2s linear infinite;
+    border-radius: 50px;
+    box-shadow: 2px 2px 2px transparent;
+  }
+  
+  .active-item::before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    border-left: 20px solid rgb(106, 255, 0);
+    border-bottom: 20px solid transparent;
+    border-top-left-radius: 0px;
+    transform: rotate(182deg);
+  }
+  
+  @keyframes wave {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+  
+  .inactive-item {
+    opacity: 1;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: transparent;
+    color: white;
+  }
+  

@@ -12,7 +12,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import { Link, useLocation } from 'react-router-dom';
-
+import '../Sidebar.css'
 const drawerWidth = 280;
 const Sidebar = () => {
     const location = useLocation(); 
@@ -46,13 +46,7 @@ const Sidebar = () => {
               <ListItemButton
                 component={Link}
                 to={routePath}
-                sx={{
-                  backgroundColor: isActive ? '' : 'transparent', // Change background color if active
-                  color: isActive ? 'black' : 'white',
-                   // Change text color if active
-                   borderRadius: isActive ? '50px' :'none',
-                   boxShadow: isActive ? '2px 2px 2px transparent' :''
-                }}
+                className={isActive ? 'active-item' : 'inactive-item'}
               >
                 <ListItemIcon sx={{ color: isActive ? 'black' : 'white' }}>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}

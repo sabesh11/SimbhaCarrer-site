@@ -33,8 +33,8 @@ import { Badge } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Modal from 'react-bootstrap/Modal';
 import DescriptionIcon from '@mui/icons-material/Description';
-import BlockIcon from '@mui/icons-material/Block';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import BlockIcon from '@mui/icons-material/Close';
+import VerifiedIcon from '@mui/icons-material/Verified';
 import {
     Dialog,
     Drawer,
@@ -45,6 +45,7 @@ import {
 
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import PersonIcon from '@mui/icons-material/Person';
 
 const drawerWidth = 280;
 
@@ -120,6 +121,23 @@ const handleClosee = () => {
     setShowResume(false)
 }
 
+const selectedCandidate = (candidateId) => {
+    axios.post(`http://localhost:5000/application//setApplicantStatusSelected/${candidateId}`)
+    .then(response => {
+       
+        console.log(response);
+
+    })
+}
+
+const rejectedCandidate = (candidateId) => {
+    axios.post(`http://localhost:5000/application//setApplicantStatusRejected/${candidateId}`)
+    .then(response => {
+       
+        console.log(response);
+
+    })
+}
 
 
 return (
@@ -181,12 +199,15 @@ return (
                                         <TableCell align="center" sx={{ color: 'grey' }} style={{ fontWeight: '750', fontFamily: '"Baskervville SC", serif' }}>{row.mobilenumber}</TableCell>
                                         <TableCell align="center" sx={{ color: 'grey' }} style={{ fontFamily: '"Baskervville SC", serif', fontWeight: '750' }}>{row.job.jobTitle}</TableCell>
                                         <TableCell align="center" style={{ color: 'green', fontWeight: '750', fontFamily: '"Baskervville SC", serif' }}> {formatDate(row.createdAt)}</TableCell>
-                                        <TableCell align="center" sx={{ color: 'black' }} style={{ fontWeight: '700', fontFamily: '"Baskervville SC", serif', }}><Badge pill className='p-2 border rounded' sx={{ backgroundColor: '#f6f6f6' }} style={{ fontSize: '12.5px' }}>
+                                        <TableCell align="center" sx={{color: 
+      row.status === 'pending' ? 'black' :
+      row.status === 'Selected' ? 'green' :
+      row.status === 'rejected' ? 'red' : '#f6f6f6', }} style={{ fontWeight: '700', fontFamily: '"Baskervville SC", serif', }}><Badge pill className='p-2 border rounded' sx={{ backgroundColor: '#f6f6f6' }} style={{ fontSize: '12.5px' }}>
                                             {row.status}
                                         </Badge></TableCell>
                                         <TableCell align="center"><DescriptionIcon sx={{ color: 'yellowgreen', cursor: 'pointer' }}
-                                            onClick={() => { handleResume(row) }} />&nbsp;&nbsp;&nbsp;&nbsp;<BlockIcon sx={{ color: 'red', cursor: 'pointer' }} />&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <CheckCircleIcon sx={{ color: 'green', cursor: 'pointer' }} />
+                                            onClick={() => { handleResume(row) }} />&nbsp;&nbsp;&nbsp;&nbsp;<BlockIcon sx={{ color: 'red', cursor: 'pointer' }} onClick={()=>{ rejectedCandidate(row._id)}} />&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <VerifiedIcon sx={{ color: 'green', cursor: 'pointer' }} onClick={()=>{ selectedCandidate(row._id)}}/>
                                         </TableCell>
 
                                     </TableRow>
@@ -221,15 +242,16 @@ return (
                     style: { width: 500, backgroundColor: 'white' },
                 }}
             >
-                <div style={{ padding: '20px' }}>
-                    <Typography variant="body1" style={{ fontWeight: 500, fontSize: '17px' }}>
+                <div style={{ padding: '20px',display:'flex',justifyContent:'end' }}>
+                    {/* <Typography variant="body1" style={{ fontWeight: 500, fontSize: '17px' }}>
                         Applied for:
-                    </Typography>
-                    <Badge
-                        // badgeContent={}
-                        color="primary"
-                        sx={{ padding: '8px', fontSize: '17px', fontWeight: 700 }}
-                    />
+                    </Typography>&nbsp;&nbsp;&nbsp;
+                    <Typography
+                        
+                        pill
+                       
+                        sx={{ fontSize: '17px', fontWeight: 700,backgroundColor:'red',borderRadius:'20px',padding:'5px' }}
+                    >software developer</Typography> */}
                     <IconButton
                         onClick={handleClosee}
                         style={{ float: 'right' }}
@@ -260,10 +282,16 @@ return (
         {/* mobile view */}
         <div className='d-md-none d-block'>
             <Bar />
+            <Toolbar sx={{ mt: 2, fontFamily: '"Baskervville SC", serif' }}>
+                        <Typography variant="h6" noWrap component="div" style={{ fontFamily: '"Baskervville SC", serif' }}>
+                            Applied Candidates
+                        </Typography>
+
+                    </Toolbar>
             {rows.map((row, index) => (
-                <div className="row justify-content-center mt-5" key={index}>
-                    <div className="col-10 ">
-                        <Card sx={{ minWidth: 100 }}>
+                <div className="row justify-content-center mt-3" key={index}>
+                    <div className="col-11 ">
+                        <Card sx={{ minWidth: 100,p:1 }}>
                             <CardContent style={{ display: 'flex' }}>
                                 <Avatar alt="User Image" src={`http://localhost:5000/application/image/${row.image}`} sx={{ width: 50, height: 50, textAlign: 'center' }} onClick={() => {
                                     handleShow(row.image)
@@ -272,17 +300,30 @@ return (
                                     {row.applicant}
                                 </Typography><br></br>
 
-
+                                
+                    <Badge pill className='p-1 border rounded' sx={{color: 
+      row.status === 'pending' ? 'black' :
+      row.status === 'Selected' ? 'green' :
+      row.status === 'rejected' ? 'red' : '#f6f6f6',backgroundColor: '#f6f6f6' }} style={{ fontFamily: '"Baskervville SC", serif',marginLeft:'100px',marginBottom:'40px',fontWeight:550 }}>
+                                            {row.status}
+                                        </Badge>
                             </CardContent>
 
-                            <CardActions sx={{ mb: 1 }}>
-                                <button class="btn w-100 text-white" type="button" style={{ backgroundColor: 'yellowgreen ', display: 'flex', alignItems: 'center' }} > <DescriptionIcon style={{ marginRight: '8px' }} />Resume</button>
+                          {row.status === 'Selected'?<CardActions sx={{ mb: 1 }}>
+                                <button class="btn w-100 text-white" type="button" style={{ backgroundColor: 'yellowgreen ', display: 'flex', alignItems: 'center' }} > &nbsp;&nbsp;&nbsp;<DescriptionIcon style={{ marginRight: '8px' }} />Resume</button>
 
-                                <button class="btn w-100 text-white" type="button" style={{ backgroundColor: 'red', display: 'flex', alignItems: 'center' }} ><BlockIcon style={{ marginRight: '8px' }} />Rejected</button>
+                                <button class="btn w-100 text-white" type="button" style={{ backgroundColor: '#007bff', display: 'flex', alignItems: 'center' }} > &nbsp;&nbsp;&nbsp;<PersonIcon style={{ marginRight: '8px' }} />Add User</button>
 
 
                             </CardActions>
+                           : <CardActions sx={{ mb: 1 }}>
+                                <button class="btn w-100 text-white" type="button" style={{ backgroundColor: 'green ', display: 'flex', alignItems: 'center' }} onClick={()=>{selectedCandidate(row._id)}}> &nbsp;&nbsp;&nbsp;<VerifiedIcon style={{ marginRight: '8px' }} />Selected</button>
 
+                                <button class="btn w-100 text-white" type="button" style={{ backgroundColor: 'red', display: 'flex', alignItems: 'center' }} onClick={()=>{ rejectedCandidate(row._id)}}> &nbsp;&nbsp;&nbsp;<BlockIcon style={{ marginRight: '8px' }} />Rejected</button>
+
+
+                            </CardActions>
+                        }  
 
                         </Card>
                     </div>
