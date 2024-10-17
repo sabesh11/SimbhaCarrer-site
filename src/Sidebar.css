@@ -1,21 +1,22 @@
 /* styles.css */
 .active-item {
-    background: linear-gradient(
-        to right,
-        rgba(255, 99, 99, 0.227) 20%,  /* Light red with transparency */
-        rgba(252, 14, 14, 0.4) 40%,     /* Strong red */
-        rgba(225, 6, 6, 0.808) 60%  /* Light red with transparency */
-      );
-    background-size: 200% auto;
-    color: rgb(255, 255, 255);
-    font-weight: bold;
-    font-size: 16px;
-    padding-left: 26px;
-    position: relative;
-    animation: wave 2s linear infinite;
-    border-radius: 50px;
-    box-shadow: 2px 2px 2px transparent;
-  }
+  background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.3) 20%,  /* Light white with transparency */
+      rgba(255, 255, 255, 0.5) 40%,  /* Stronger white */
+      rgba(255, 255, 255, 0.7) 60%   /* Even stronger white */
+    );
+  background-size: 200% auto;
+  color:white; /* Black text for contrast */
+  font-weight: bold;
+  font-size: 16px;
+  padding-left: 26px;
+  position: relative;
+  animation: wave 2s linear infinite;
+  border-radius: 100px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2); /* Light shadow for depth */
+}
+
   
   .active-item::before {
     content: '';

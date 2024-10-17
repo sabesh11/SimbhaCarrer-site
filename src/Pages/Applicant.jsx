@@ -15,7 +15,7 @@ import Paper from '@mui/material/Paper';
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { Alert, IconButton, InputAdornment, TextField } from '@mui/material';
+import { Alert, IconButton, InputAdornment, MenuItem, TextField } from '@mui/material';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -46,6 +46,7 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import PersonIcon from '@mui/icons-material/Person';
+import Swal from 'sweetalert2'
 
 const drawerWidth = 280;
 
@@ -82,7 +83,7 @@ export default function JobPanel() {
         "Content Editor", "HR Manager", "YouTube Content Creator", "Telecaller", "Sales & Marketing", "Tutor"
     ];
 
-
+const status=['shortlisted', 'Selected', 'attended', 'rejected','not-attended','not-responding','pending']
     useEffect(() => {
         getAplicantDetails();
     }, [])
@@ -126,6 +127,12 @@ const selectedCandidate = (candidateId) => {
     .then(response => {
        
         console.log(response);
+        Swal.fire({
+            title: "Selected!",
+            text: "Candidate has been selected Successfully!",
+            icon: "success"
+          });
+        getAplicantDetails();
 
     })
 }
@@ -135,6 +142,12 @@ const rejectedCandidate = (candidateId) => {
     .then(response => {
        
         console.log(response);
+        Swal.fire({
+            title: "Rejected!",
+            text: "Candidate has been Rejected!",
+            icon: "error"
+          });
+        getAplicantDetails();
 
     })
 }
@@ -154,17 +167,61 @@ return (
                         color: 'black'
                     }}
                 >
-                    <Toolbar sx={{ mt: 2, fontFamily: '"Baskervville SC", serif' }}>
-                        <Typography variant="h4" noWrap component="div" style={{ fontFamily: '"Baskervville SC", serif' }}>
+                    <Toolbar sx={{ mt: 3, fontFamily: '"Baskervville SC", serif', }}>
+                        <Typography variant="h4" noWrap component="div" style={{ fontFamily: '"Baskervville SC", serif',width:'500px' }}>
                             Applied Candidates
                         </Typography>
-
+<div className='justify-content-end w-100 row mt-2 me-3' ><div className='col-4'> <TextField 
+                            id="outlined-basic"
+                             label="filter by status" 
+                             fullWidth
+                             select
+                             size='small'
+                           
+                            name='status'
+                          
+                            slotProps={{
+                                    input: {
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                {/* <WorkIcon /> */}
+                                            </InputAdornment>
+                                        ),
+                                    },
+                                }} variant="outlined" >
+                                   {status.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option }
+            </MenuItem> ))}
+                                  </TextField></div><div className='col-4'><TextField 
+                            id="outlined-basic"
+                             label="Filter by job" 
+                             fullWidth
+                             size='small'
+                             select
+                            
+                            name='status'
+                           
+                            slotProps={{
+                                    input: {
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                {/* <WorkIcon /> */}
+                                            </InputAdornment>
+                                        ),
+                                    },
+                                }} variant="outlined" >
+                                   {jobTitleList.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option }
+            </MenuItem> ))}
+                                  </TextField></div></div>
                     </Toolbar>
                 </AppBar>
 
                 <Box
                     component="main"
-                    sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
+                    sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3,mt:5 }}
                 >
                     <Toolbar />
                     <TableContainer component={Paper} sx={{ mt: 5 }}>
@@ -205,9 +262,28 @@ return (
       row.status === 'rejected' ? 'red' : '#f6f6f6', }} style={{ fontWeight: '700', fontFamily: '"Baskervville SC", serif', }}><Badge pill className='p-2 border rounded' sx={{ backgroundColor: '#f6f6f6' }} style={{ fontSize: '12.5px' }}>
                                             {row.status}
                                         </Badge></TableCell>
-                                        <TableCell align="center"><DescriptionIcon sx={{ color: 'yellowgreen', cursor: 'pointer' }}
+                                        <TableCell align="center">
+                                        {
+                                             row.status === 'pending'?
+                                             <div>
+                                             <DescriptionIcon sx={{ color: 'yellowgreen', cursor: 'pointer' }}
                                             onClick={() => { handleResume(row) }} />&nbsp;&nbsp;&nbsp;&nbsp;<BlockIcon sx={{ color: 'red', cursor: 'pointer' }} onClick={()=>{ rejectedCandidate(row._id)}} />&nbsp;&nbsp;&nbsp;&nbsp;
                                             <VerifiedIcon sx={{ color: 'green', cursor: 'pointer' }} onClick={()=>{ selectedCandidate(row._id)}}/>
+                                            </div> :<div></div>
+                                        }
+                                        {
+                                             row.status === 'Selected' ? <div><DescriptionIcon sx={{ color: 'yellowgreen', cursor: 'pointer' }}
+                                             onClick={() => { handleResume(row) }} />&nbsp;&nbsp;&nbsp;&nbsp;<PersonIcon sx={{ color: 'blue', cursor: 'pointer' }}  />&nbsp;&nbsp;&nbsp;&nbsp;
+                                             
+                                             </div> :<div></div>
+                                        }
+                                        {
+                                            
+                                             row.status === 'rejected' ?<div> <DescriptionIcon sx={{ color: 'yellowgreen', cursor: 'pointer' }}
+                                             onClick={() => { handleResume(row) }} />
+                                             
+                                             </div> :<div></div>
+                                        }
                                         </TableCell>
 
                                     </TableRow>
@@ -289,8 +365,8 @@ return (
 
                     </Toolbar>
             {rows.map((row, index) => (
-                <div className="row justify-content-center mt-3" key={index}>
-                    <div className="col-11 ">
+                <div className="row justify-content-center mt-3 " key={index}>
+                    <div className="col-11 mb-1">
                         <Card sx={{ minWidth: 100,p:1 }}>
                             <CardContent style={{ display: 'flex' }}>
                                 <Avatar alt="User Image" src={`http://localhost:5000/application/image/${row.image}`} sx={{ width: 50, height: 50, textAlign: 'center' }} onClick={() => {
